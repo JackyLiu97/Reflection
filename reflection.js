@@ -1,3 +1,9 @@
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const auth = require('./auth.json');
 
-const secret_api = 'NmfaSPUo7CfWJ7m1UFX6DdVR2XAHmg3t'
-console.log("Test 1 repo")
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.login(auth.token);

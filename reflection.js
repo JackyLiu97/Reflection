@@ -8,17 +8,43 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-	
-	if (message.content.startsWith(config.prefix + 'ping')) {
+
+	if (message.author.bot) return;
+
+	// splits command into prefix, command name, args[]
+	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+	const command = args.shift().toLowerCase();
+
+	if (command === 'ping') {
 		message.channel.send('Pong!');
-		console.log(config.prefix);
 	}
 
-if (message.content.startsWith(config.prefix + 'delete')) {
-    message.delete(1000);
-	message.reply('Deleting messages!').then(deleted_msg => {deleted_msg.delete(1000); });
-    
-}
+	if (command === 'test') {
+		count = 0;
+		while (count < 10) {
+			message.channel.send('This is a test message');
+			
+			count++;
+		}
+	}
+
+	// deletes X number of messages
+
+	if (command === 'delete') {
+		
+		let numToDelete = parseInt(args[0], 10) + 1;
+		
+		async function clear() {
+			let fetched = await message.channel.fetchMessages({limit:numToDelete});
+			message.channel.bulkDelete(fetched);	
+		}
+
+		if (Number.isInteger(numToDelete)) {
+			console.log((numToDelete - 1) + ' messages deleted!');
+			clear();
+		}
+		
+	}
 });
 
 

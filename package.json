@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/JackyLiu97/Reflection#readme",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "discord.js": "^11.5.1",
+    "eslint": "^6.5.1"
   }
 }

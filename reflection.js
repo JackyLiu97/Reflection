@@ -11,7 +11,7 @@ client.on('message', message => {
 
 	if (message.author.bot) return;
 
-	// splits command into prefix, command name, args[]
+	// splits user input into prefix, command name, args[]
 	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 
@@ -19,6 +19,7 @@ client.on('message', message => {
 		message.channel.send('Pong!');
 	}
 
+	// testing command generates 10 messages
 	if (command === 'test') {
 		count = 0;
 		while (count < 10) {
@@ -28,15 +29,21 @@ client.on('message', message => {
 		}
 	}
 
-	// deletes X number of messages
-
+	// deletes X number of messages given by user input
 	if (command === 'delete') {
 		
-		let numToDelete = parseInt(args[0], 10) + 1;
+		let numToDelete = parseInt(args[0], 10) + 1; // added one to account for the command input
 		
 		async function clear() {
 			let fetched = await message.channel.fetchMessages({limit:numToDelete});
-			message.channel.bulkDelete(fetched);	
+			let fetched_messages = fetched.array();
+			let toDelete = [];
+			for (let i = 0; i < fetched_messages.length; i++) { // filters out messages that have attachments
+				if (!(fetched_messages[i].attachments.size > 0)) {
+					toDelete.push(fetched_messages[i]);
+				}
+			}
+			toDelete.forEach(message => message.delete())	
 		}
 
 		if (Number.isInteger(numToDelete)) {

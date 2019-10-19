@@ -55,16 +55,16 @@ client.on('message', message => {
 			let TimeStamp = Math.floor(Date.now() / 1000)  //TimeStamp expressed in seconds
 			// Date.now() returns the current timestamp expressed in milliseconds. 
 			let filter = TimeStamp - minutes  //minimum threshold ?
-			console.log("Current Timestamp is " + TimeStamp)
-			console.log("current filter is "+ filter)
+			//console.log("Current Timestamp is " + TimeStamp)
+			//console.log("current filter is "+ filter)
 			let filter_msg = []
 			for (let i = 0; i < mess_arr.length;i++) {
-				console.log(Math.floor(mess_arr[i].createdTimestamp/1000))
-				if (Math.floor(mess_arr[i].createdTimestamp / 1000 ) < filter) {
+				//console.log(Math.floor(mess_arr[i].createdTimestamp/1000))
+				if (Math.floor(mess_arr[i].createdTimestamp / 1000 ) < filter && (!mess_arr[i].attachments.size >0)) {
 					filter_msg.push(mess_arr[i])
 				}
 			}
-			console.log(filter_msg)
+			//console.log(filter_msg)
 			filter_msg.forEach(msg => msg.delete())
 		}
 

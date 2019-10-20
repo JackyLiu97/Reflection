@@ -29,6 +29,15 @@ client.on('message', message => {
 		}
 	}
 
+	// fuck this shit
+	if (command === 'imout') {
+		message.channel.send({embed: {
+			image: {
+				url: "https://i.makeagif.com/media/11-15-2015/rGySXS.gif"
+			}
+		}});
+	}
+
 	// deletes X number of messages given by user input
 	if (command === 'delete') {
 		

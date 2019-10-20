@@ -75,31 +75,45 @@ client.on('message', message => {
 		
 	}
 
-	// deletes based on time // not done bot crashes when I run it lol
+	// deletes based on time [!deletime 10] deletes messages in the last 10 minutes
 	if (command === 'deletetime') {
 		let minutes = parseInt(args[0],10) * 60 // minutes expressed in seconds 
 		async function clear() {
 			let messages = await message.channel.fetchMessages({limit:100});
-			let mess_arr = messages.array()
+			let fetched_messages = messages.array()
 			let TimeStamp = Math.floor(Date.now() / 1000)  //TimeStamp expressed in seconds
 			// Date.now() returns the current timestamp expressed in milliseconds. 
 			let filter = TimeStamp - minutes  //minimum threshold ?
-			//console.log("Current Timestamp is " + TimeStamp)
-			//console.log("current filter is "+ filter)
-			let filter_msg = []
-			for (let i = 0; i < mess_arr.length;i++) {
-				//console.log(Math.floor(mess_arr[i].createdTimestamp/1000))
-				if (Math.floor(mess_arr[i].createdTimestamp / 1000 ) < filter && (!mess_arr[i].attachments.size > 0)) {
-					filter_msg.push(mess_arr[i])
+			console.log("Current Timestamp is " + TimeStamp)
+			console.log("current filter is "+ filter)
+			let toDelete = []	
+			for (let i = 0; i < fetched_messages.length; i++) {
+				console.log(Math.floor(fetched_messages[i].createdTimestamp/1000))
+				if ((Math.floor(fetched_messages[i].createdTimestamp / 1000 ) > filter) && (!(fetched_messages[i].attachments.size > 0))) {
+					toDelete.push(fetched_messages[i]) //the lesson here is put parenthesis [it matters]
+					console.log(fetched_messages[i].content) // this didnt do shit for some reason 
 				}
+				/*
+				if (fetched_messages[i].attachments.size > 0) {
+					let attach = fetched_messages[i].attachments.array()
+					let url = attach[0].url
+					if (!url.endsWith('jpg') && !url.endsWith('png')) {
+						console.log('delete please');
+						toDelete.push(fetched_messages[i]);
+					}
+				}
+				else {
+					toDelete.push(fetched_messages[i])
+				}
+				*/
 			}
 			//console.log(filter_msg)
-			filter_msg.forEach(msg => msg.delete())
+			toDelete.forEach(message => message.delete())
 		}
 
 		if (Number.isInteger(minutes)) {
 			clear();
-			console.log((minutes + ' deleted'))
+			console.log(("messages were deleted in the last " + minutes + " seconds"))
 		}
 	}
 });

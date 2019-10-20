@@ -11,7 +11,7 @@ client.on('message', message => {
 
 	if (message.author.bot) return;
 
-	// splits command into prefix, command name, args[]
+	// splits user input into prefix, command name, args[]
 	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 
@@ -19,6 +19,7 @@ client.on('message', message => {
 		message.channel.send('Pong!');
 	}
 
+	// testing command generates 10 messages
 	if (command === 'test') {
 		count = 0;
 		while (count < 10) {
@@ -28,15 +29,43 @@ client.on('message', message => {
 		}
 	}
 
-	// deletes X number of messages
+	// fuck this shit
+	if (command === 'imout') {
+		message.channel.send({embed: {
+			image: {
+				url: "https://i.makeagif.com/media/11-15-2015/rGySXS.gif"
+			}
+		}});
+	}
 
+	// deletes X number of messages given by user input
 	if (command === 'delete') {
 		
-		let numToDelete = parseInt(args[0], 10) + 1;
+		let numToDelete = parseInt(args[0], 10) + 1; // added one to account for the command input
 		
 		async function clear() {
 			let fetched = await message.channel.fetchMessages({limit:numToDelete});
-			message.channel.bulkDelete(fetched);	
+			
+			let fetched_messages = fetched.array();
+			let toDelete = [];
+			for (let i = 0; i < fetched_messages.length; i++) { // filters out messages that have attachments
+				
+				if (fetched_messages[i].attachments.size > 0) {
+					// check the attachment url to whitelist images ending with jpg or png
+					let attach = fetched_messages[i].attachments.array();
+					let url = attach[0].url;
+					// console.log(attach[0].url);
+					// console.log(url.endsWith('jpg'));
+					if (!url.endsWith('jpg') && !url.endsWith('png')) {
+						console.log('delete please');
+						toDelete.push(fetched_messages[i]);
+					}
+					
+				} else {
+					toDelete.push(fetched_messages[i]);
+				}
+			}
+			toDelete.forEach(message => message.delete())	
 		}
 
 		if (Number.isInteger(numToDelete)) {
@@ -60,7 +89,7 @@ client.on('message', message => {
 			let filter_msg = []
 			for (let i = 0; i < mess_arr.length;i++) {
 				//console.log(Math.floor(mess_arr[i].createdTimestamp/1000))
-				if (Math.floor(mess_arr[i].createdTimestamp / 1000 ) < filter && (!mess_arr[i].attachments.size >0)) {
+				if (Math.floor(mess_arr[i].createdTimestamp / 1000 ) < filter && (!mess_arr[i].attachments.size > 0)) {
 					filter_msg.push(mess_arr[i])
 				}
 			}

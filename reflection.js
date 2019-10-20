@@ -91,23 +91,19 @@ client.on('message', message => {
 				console.log(Math.floor(fetched_messages[i].createdTimestamp/1000))
 				if ((Math.floor(fetched_messages[i].createdTimestamp / 1000 ) > filter) && (!(fetched_messages[i].attachments.size > 0))) {
 					toDelete.push(fetched_messages[i]) //the lesson here is put parenthesis [it matters]
-					console.log(fetched_messages[i].content) // this didnt do shit for some reason 
+					console.log(fetched_messages[i].content)
 				}
-				/*
 				if (fetched_messages[i].attachments.size > 0) {
 					let attach = fetched_messages[i].attachments.array()
 					let url = attach[0].url
+					/* don't understand the logic for !url.endsWith('jpg') && !url.endsWith('png') 
+					shouldn't be it || instead of && ? */
 					if (!url.endsWith('jpg') && !url.endsWith('png')) {
 						console.log('delete please');
 						toDelete.push(fetched_messages[i]);
 					}
 				}
-				else {
-					toDelete.push(fetched_messages[i])
-				}
-				*/
 			}
-			//console.log(filter_msg)
 			toDelete.forEach(message => message.delete())
 		}
 

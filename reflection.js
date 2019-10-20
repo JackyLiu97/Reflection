@@ -36,10 +36,23 @@ client.on('message', message => {
 		
 		async function clear() {
 			let fetched = await message.channel.fetchMessages({limit:numToDelete});
+			
 			let fetched_messages = fetched.array();
 			let toDelete = [];
 			for (let i = 0; i < fetched_messages.length; i++) { // filters out messages that have attachments
-				if (!(fetched_messages[i].attachments.size > 0)) {
+				
+				if (fetched_messages[i].attachments.size > 0) {
+					// check the attachment url to whitelist images ending with jpg or png
+					let attach = fetched_messages[i].attachments.array();
+					let url = attach[0].url;
+					// console.log(attach[0].url);
+					// console.log(url.endsWith('jpg'));
+					if (!url.endsWith('jpg') && !url.endsWith('png')) {
+						console.log('delete please');
+						toDelete.push(fetched_messages[i]);
+					}
+					
+				} else {
 					toDelete.push(fetched_messages[i]);
 				}
 			}
@@ -67,7 +80,7 @@ client.on('message', message => {
 			let filter_msg = []
 			for (let i = 0; i < mess_arr.length;i++) {
 				//console.log(Math.floor(mess_arr[i].createdTimestamp/1000))
-				if (Math.floor(mess_arr[i].createdTimestamp / 1000 ) < filter && (!mess_arr[i].attachments.size >0)) {
+				if (Math.floor(mess_arr[i].createdTimestamp / 1000 ) < filter && (!mess_arr[i].attachments.size > 0)) {
 					filter_msg.push(mess_arr[i])
 				}
 			}

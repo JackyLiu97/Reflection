@@ -86,36 +86,39 @@ client.on('message', message => {
 
 	// deletes based on time [!deletime 10] deletes messages in the last 10 minutes
 	if (command === 'deletetime') {
-		let minutes = parseInt(args[0],10) * 60 // minutes expressed in seconds 
-		async function clear() {
-			let messages = await message.channel.fetchMessages({limit:100});
-			let fetched_messages = messages.array()
-			let TimeStamp = Math.floor(Date.now() / 1000)  //TimeStamp expressed in seconds
-			// Date.now() returns the current timestamp expressed in milliseconds. 
-			let filter = TimeStamp - minutes  //minimum threshold ?
-			console.log("Current Timestamp is " + TimeStamp)
-			console.log("current filter is "+ filter)
-			let toDelete = []	
-			for (let i = 0; i < fetched_messages.length; i++) {
-				console.log(Math.floor(fetched_messages[i].createdTimestamp/1000))
-				if ((Math.floor(fetched_messages[i].createdTimestamp / 1000 ) > filter) && (!(fetched_messages[i].attachments.size > 0))) {
-					toDelete.push(fetched_messages[i]) //the lesson here is put parenthesis [it matters]
-					console.log(fetched_messages[i].content)
-				}
-				if (fetched_messages[i].attachments.size > 0) {
-					let attach = fetched_messages[i].attachments.array()
-					let url = attach[0].url
-					/* don't understand the logic for !url.endsWith('jpg') && !url.endsWith('png') 
-					shouldn't be it || instead of && ? */
-					if (!url.endsWith('jpg') && !url.endsWith('png')) {
-						console.log('delete please');
-						toDelete.push(fetched_messages[i]);
+		
+		if (message.member.hasPermission('ADMINISTRATOR')) {
+				let minutes = parseInt(args[0],10) * 60 // minutes expressed in seconds
+					async function clear() {
+						let messages = await message.channel.fetchMessages({limit:100});
+						let fetched_messages = messages.array()
+						let TimeStamp = Math.floor(Date.now() / 1000)  //TimeStamp expressed in seconds
+						// Date.now() returns the current timestamp expressed in milliseconds. 
+						let filter = TimeStamp - minutes  //minimum threshold ?
+						//console.log("Current Timestamp is " + TimeStamp)
+						//console.log("current filter is "+ filter)
+						let toDelete = []	
+						for (let i = 0; i < fetched_messages.length; i++) {
+							//console.log(Math.floor(fetched_messages[i].createdTimestamp/1000))
+							if ((Math.floor(fetched_messages[i].createdTimestamp / 1000 ) > filter) && (!(fetched_messages[i].attachments.size > 0))) {
+								toDelete.push(fetched_messages[i]) //the lesson here is put parenthesis [it matters]
+								console.log(fetched_messages[i].content)
+							}
+							if (fetched_messages[i].attachments.size > 0) {
+								let attach = fetched_messages[i].attachments.array()
+								let url = attach[0].url
+								if (!url.endsWith('jpg') && !url.endsWith('png')) {
+									console.log('delete please');
+									toDelete.push(fetched_messages[i]);
+								}
+							}
+						}
+						toDelete.forEach(message => message.delete())
 					}
-				}
 			}
-			toDelete.forEach(message => message.delete())
+		else {
+			message.reply("@"+ message.author.username + " Sorry, You do not have permission to do that!")
 		}
-
 		if (Number.isInteger(minutes)) {
 			clear();
 			console.log(("messages were deleted in the last " + minutes + " seconds"))

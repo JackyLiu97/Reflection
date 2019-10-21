@@ -91,14 +91,25 @@ client.on('message', message => {
 			let mess_arr = messages.array()
 			let TimeStamp = Math.floor(Date.now() / 1000)  //TimeStamp expressed in seconds
 			// Date.now() returns the current timestamp expressed in milliseconds. 
-			let filter = TimeStamp - minutes  // cannot exceed maxiumum threshold 
-			//console.log("Current Timestamp is " + TimeStamp)
-			//console.log("current filter is "+ filter)
-			let filter_msg = []
-			for (let i = 0; i < mess_arr.length;i++) {
-				//console.log(Math.floor(mess_arr[i].createdTimestamp/1000))
-				if (Math.floor(mess_arr[i].createdTimestamp / 1000 ) < filter && (!mess_arr[i].attachments.size >0)) {
-					filter_msg.push(mess_arr[i])
+			let filter = TimeStamp - minutes  //minimum threshold ?
+			console.log("Current Timestamp is " + TimeStamp)
+			console.log("current filter is "+ filter)
+			let toDelete = []	
+			for (let i = 0; i < fetched_messages.length; i++) {
+				console.log(Math.floor(fetched_messages[i].createdTimestamp/1000))
+				if ((Math.floor(fetched_messages[i].createdTimestamp / 1000 ) > filter) && (!(fetched_messages[i].attachments.size > 0))) {
+					toDelete.push(fetched_messages[i]) 
+					console.log(fetched_messages[i].content)
+				}
+				if (fetched_messages[i].attachments.size > 0) {
+					let attach = fetched_messages[i].attachments.array()
+					let url = attach[0].url
+					/* don't understand the logic for !url.endsWith('jpg') && !url.endsWith('png') 
+					shouldn't be it || instead of && ? */
+					if (!url.endsWith('jpg') && !url.endsWith('png')) {
+						console.log('delete please');
+						toDelete.push(fetched_messages[i]);
+					}
 				}
 			}
 			//console.log(filter_msg)

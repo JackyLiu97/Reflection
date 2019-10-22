@@ -115,13 +115,13 @@ client.on('message', message => {
 						}
 						toDelete.forEach(message => message.delete())
 					}
+					if (Number.isInteger(minutes)) {
+						clear();
+						console.log(("messages were deleted in the last " + minutes + " seconds"))
+					}
 			}
 		else {
 			message.reply("@"+ message.author.username + " Sorry, You do not have permission to do that!")
-		}
-		if (Number.isInteger(minutes)) {
-			clear();
-			console.log(("messages were deleted in the last " + minutes + " seconds"))
 		}
 	}
 });

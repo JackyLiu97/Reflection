@@ -12,7 +12,9 @@ For example, !delete 10 will delete the last 10 messages
 
 deletetime takes a number that will delete messages in the last X minutes </br>
 
-For example, !deletetime 10 will delete messages in the last 10 minutes. 
+For example, !deletetime 10 will delete messages in the last 10 minutes.
+
+OwO and UwU returns owo and uwu. Are you amused? 
 
 The discord bot was created using nodeJS and hosted on AWS.
 

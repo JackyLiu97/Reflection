@@ -11,17 +11,12 @@ client.on('message', message => {
 
 	if (message.author.bot) return;
 
+	
 	// splits user input into prefix, command name, args[]
 	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 
-	if (command === 'ping') {
-		if (message.member.hasPermission('ADMINISTRATOR')) {
-			console.log('This user is admin');
-		}
-			
-		message.channel.send('Pong!');
-	}
+
 
 	// testing command generates 10 messages
 	if (command === 'test') {
@@ -33,14 +28,6 @@ client.on('message', message => {
 		}
 	}
 
-	// fuck this shit
-	if (command === 'imout') {
-		message.channel.send({embed: {
-			image: {
-				url: "https://i.makeagif.com/media/11-15-2015/rGySXS.gif"
-			}
-		}});
-	}
 
 	// deletes X number of messages given by user input
 	if (command === 'delete') {
@@ -50,8 +37,9 @@ client.on('message', message => {
 		
 			async function clear() {
 				try {
-					let fetched = await message.channel.fetchMessages({limit:numToDelete});
+					let fetched = await message.channel.messages.fetch({limit:numToDelete});
 					let fetched_messages = fetched.array();
+					console.log(fetched_messages)
 					let toDelete = [];
 					for (let i = 0; i < fetched_messages.length; i++) { // filters out messages that have attachments
 						if (fetched_messages[i].attachments.size > 0) {
@@ -93,7 +81,7 @@ client.on('message', message => {
 				let minutes = parseInt(args[0],10) * 60 // minutes expressed in seconds
 					async function clear() {
 						try {
-							let messages = await message.channel.fetchMessages({limit:100});
+							let messages = await message.channel.messages.fetch({limit:100});
 							let fetched_messages = messages.array()
 							let TimeStamp = Math.floor(Date.now() / 1000)  //TimeStamp expressed in seconds
 							// Date.now() returns the current timestamp expressed in milliseconds. 
@@ -131,6 +119,16 @@ client.on('message', message => {
 			message.reply("Sorry, You do not have permission to do that!")
 		}
 	}
+	
+
+		if (message.content.toLowerCase("OwO").startsWith("owo")) {
+			message.channel.send("owo")
+		}
+
+		if (message.content.toLowerCase("UwU").startsWith("uwu")) {
+			message.channel.send("uwu")
+		}
+	
 });
 
 

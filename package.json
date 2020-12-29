@@ -1,10 +1,11 @@
 {
   "name": "reflection_bot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "reflection.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon reflection.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,10 @@
   },
   "homepage": "https://github.com/JackyLiu97/Reflection#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "discord.js": "^12.1.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
 }

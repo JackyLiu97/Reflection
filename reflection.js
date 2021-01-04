@@ -17,7 +17,7 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-client.on("message", async (message) => {
+client.on("message", message => {
   if (message.author.bot) return;
 
   // splits user input into prefix, command name, args[]
@@ -45,6 +45,9 @@ client.on("message", async (message) => {
     }
     if (commandName === 'ping') {
       command.execute(client,message, args);
+    }
+    if (commandName === 'pic') {
+      command.execute(client,message,args)
     }
   } catch (error) {
     console.log(error);

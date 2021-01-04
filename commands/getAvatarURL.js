@@ -20,12 +20,5 @@ module.exports = {
         .catch((err) => {
           console.log(err)
         }) 
-    // }
-    // const getUserID = client.user.getID.displayAvatarUrl({
-    //     format: 'png',
-    //     dynamic: true,
-    //     size: 4096
-    // })
-    // console.log(getUserID)
       }
 };

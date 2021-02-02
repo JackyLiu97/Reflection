@@ -17,7 +17,7 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-client.on("message", message => {
+client.on("message", (message) => {
   if (message.author.bot) return;
 
   // splits user input into prefix, command name, args[]
@@ -32,10 +32,10 @@ client.on("message", message => {
 
   try {
     if (message.content.toLowerCase("OwO").startsWith("owo")) {
-      message.channel.send("owo");
+      message.channel.send("OwO");
     }
     if (message.content.toLowerCase("UwU").startsWith("uwu")) {
-      message.channel.send("uwu");
+      message.channel.send("UwU");
     }
     if (commandName === "delete") {
       command.execute(message, args);
@@ -43,11 +43,14 @@ client.on("message", message => {
     if (commandName === "test") {
       command.execute(message, args);
     }
-    if (commandName === 'ping') {
-      command.execute(client,message, args);
+    if (commandName === "ping") {
+      command.execute(client, message, args);
     }
-    if (commandName === 'pic') {
-      command.execute(client,message,args)
+    if (commandName === "pic") {
+      command.execute(client, message, args);
+    }
+    if (commandName === "help") {
+      command.execute(message, args);
     }
   } catch (error) {
     console.log(error);
